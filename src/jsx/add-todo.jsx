@@ -2,6 +2,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useState, useContext } from "react";
 import Button from "@mui/material/Button";
+import Popover from "@mui/material/Popover";
 
 import { TodoContext } from "../context/todo.context";
 
@@ -25,6 +26,7 @@ const ADD_TODO = gql`
 export const AddTodo = () => {
   const [title, setTitle] = useState("");
   const [userName, setUserName] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const { _createTodo } = useContext(TodoContext);
 
@@ -41,6 +43,13 @@ export const AddTodo = () => {
   });
 
   if (error) return `Error in add todos! ${error.message}`;
+
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   return (
     <div className="add_container">
@@ -72,14 +81,39 @@ export const AddTodo = () => {
       />
       <br />
       <Button
+        aria-describedby={id}
         sx={{ mt: "10px" }}
         size="large"
         variant="contained"
         color="first"
-        onClick={() => addTodo({ variables: { title: title } })}
+        onClick={(e) => {
+          if (title === "" || userName === "") {
+            setAnchorEl(e.currentTarget);
+          } else {
+            addTodo({ variables: { title: title } });
+          }
+        }}
       >
         Add
       </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setAnchorEl(null);
+        }}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        Title or author is empty...
+      </Popover>
     </div>
   );
 };
