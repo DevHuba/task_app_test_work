@@ -14,8 +14,7 @@ Use Graphql endpoint, use router (like react-router)
 Make some validations for new entries.
 
 Plus (not mandatory):
-Apollo client
-lazy loading of todos on scroll (not realised at the moment)
+Apollo client,lazy loading of todos on scroll (not realised at the moment)
 
 ## Available Scripts
 
